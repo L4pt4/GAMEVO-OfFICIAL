@@ -1,0 +1,1249 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GAMEVO</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --accent: #ffd166;
+            --accent-2: #ff6b6b;
+            --ink: #111;
+            --panel: rgba(255,255,255,0.08);
+            --border: rgba(255,255,255,0.16);
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            background: linear-gradient(135deg, #030303 0%, #161616 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: url('IMG/wp13142518.jpg') center/cover no-repeat;
+            opacity: 0.22;
+            z-index: -2;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.75));
+            z-index: -1;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 76px;
+            padding: 12px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            background: rgba(0,0,0,0.86);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1200;
+        }
+
+        .brand { 
+            font-size: clamp(1.25rem, 3.2vw, 1.8rem);
+            letter-spacing: 0.28rem; 
+            font-weight: 800; 
+            text-transform: uppercase; 
+            margin: 0;
+        }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .nav-btn, .icon-btn {
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.08);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 999px;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease;
+            font-weight: 600;
+        }
+
+        .nav-btn:hover, .icon-btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.18); }
+
+        .ctc-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            border: none;
+            font-weight: 700;
+            box-shadow: 0 10px 22px rgba(18, 140, 126, 0.28);
+        }
+        .ctc-btn:hover { background: linear-gradient(135deg, #2be77b, #1ca67a); }
+        .cta-icon {
+            width: 18px;
+            height: 18px;
+            filter: brightness(0) invert(1);
+        }
+
+        .icon-btn {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -4px;
+            right: -2px;
+            min-width: 22px;
+            height: 22px;
+            padding: 0 6px;
+            border-radius: 999px;
+            background: var(--accent-2);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .hero {
+            min-height: 100vh;
+            padding: 120px 24px 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .hero-card {
+            max-width: 760px;
+            width: 100%;
+            padding: 44px;
+            border-radius: 28px;
+            background: rgba(5,5,5,0.72);
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 45px rgba(0,0,0,0.28);
+        }
+
+        .hero-card h1 { font-size: clamp(2.4rem, 6vw, 4.8rem); margin: 0 0 12px; letter-spacing: 0.32rem; }
+        .hero-card p { font-size: 1.1rem; color: #dde0e5; margin: 0 0 18px; }
+        .hero-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.08);
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+        .btn:hover { background: rgba(255,255,255,0.16); transform: translateY(-2px); }
+        .btn.primary { background: linear-gradient(135deg, var(--accent), #ff9f1c); color: #111; border: none; font-weight: 700; }
+
+        section { padding: 72px 24px; }
+        .section-block {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-section {
+            background: rgba(2,2,2,0.73);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 36px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.28);
+        }
+
+        .about-list { display: grid; gap: 24px; }
+        .about-item {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+            gap: 24px;
+            align-items: center;
+            padding: 18px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+        }
+        .about-item.reverse { grid-template-columns: 1fr 1.1fr; }
+        .about-item .image-frame {
+            width: 100%;
+            height: 240px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+        .about-item .image-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .about-item h3 { margin-top: 0; margin-bottom: 8px; font-size: 1.3rem; }
+        .about-item p { color: #d8dde8; line-height: 1.7; margin: 0; }
+
+        .contact-section {
+            background: #ffffff;
+            color: #111;
+            border-radius: 24px;
+            padding: 40px 32px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.24);
+        }
+        .contact-section h2 { margin-top: 0; font-size: 1.8rem; }
+        .contact-section p { font-size: 1rem; margin: 8px 0; }
+        .contact-section a { color: #0a6bff; text-decoration: none; }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.82);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            z-index: 2000;
+        }
+        .modal-card {
+            background: #151515;
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            width: min(1100px, 100%);
+            max-height: min(86vh, 900px);
+            overflow: auto;
+            box-shadow: 0 18px 45px rgba(0,0,0,0.35);
+            padding: 24px;
+        }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+        .modal-header h3 { margin: 0; font-size: 1.35rem; }
+        .modal-close { background: none; border: none; color: white; font-size: 1.45rem; cursor: pointer; }
+        .modal-back-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.08);
+            color: white;
+            cursor: pointer;
+            font-size: 1rem;
+            margin-right: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .category-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+        .category-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            padding: 14px;
+        }
+        .detail-shell { display: grid; gap: 18px; }
+        .detail-layout { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 20px; align-items: start; }
+        .carousel-panel { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 18px; padding: 14px; }
+        .carousel-stage { position: relative; width: 100%; height: 320px; border-radius: 14px; overflow: hidden; background: #000; }
+        .carousel-stage img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.35s ease; }
+        .carousel-stage img.active { opacity: 1; }
+        .carousel-controls { display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 12px; }
+        .carousel-arrow { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: rgba(255,255,255,0.08); color: white; cursor: pointer; }
+        .carousel-dots { display: flex; gap: 8px; }
+        .carousel-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.4); cursor: pointer; }
+        .carousel-dot.active { background: var(--accent); }
+        .detail-info { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 18px; padding: 18px; }
+        .detail-title { margin: 0 0 10px; font-size: 1.35rem; outline: none; }
+        .detail-price { color: var(--accent); font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; outline: none; }
+        .spec-list { margin: 0 0 16px; padding-left: 18px; color: #d6dde7; line-height: 1.7; }
+        .detail-info .buy-btn { width: 100%; padding: 10px 14px; border: none; border-radius: 999px; background: linear-gradient(135deg, var(--accent), #ff9f1c); color: #111; cursor: pointer; font-weight: 700; }
+        .back-btn { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--border); background: rgba(255,255,255,0.08); color: white; cursor: pointer; font-size: 1rem; }
+        .option-card-clickable { cursor: pointer; }
+        .option-card-clickable:hover { transform: translateY(-2px); transition: transform 0.2s ease; }
+        .category-card .preview {
+            height: 170px;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        .preview-track { position: relative; width: 100%; height: 100%; }
+        .preview-track img { width: 100%; height: 100%; object-fit: cover; display: block; position: absolute; inset: 0; opacity: 0; transition: opacity 0.45s ease; }
+        .preview-track img.active { opacity: 1; }
+        .preview .preview-caption { position: absolute; inset: auto 0 0 0; background: linear-gradient(180deg, transparent, rgba(0,0,0,0.75)); padding: 10px 12px; font-size: 0.9rem; color: white; z-index: 1; }
+        .category-card h4 { margin: 0 0 8px; font-size: 1rem; }
+        .category-card p { color: #d4dce7; font-size: 0.92rem; margin: 0 0 12px; }
+        .category-card .actions { display: flex; justify-content: flex-end; }
+        .category-card button { border: none; padding: 9px 12px; border-radius: 999px; cursor: pointer; background: linear-gradient(135deg, var(--accent), #ff9f1c); color: #111; font-weight: 700; }
+
+        .sub-modal-card {
+            background: #111;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            width: min(1000px, 100%);
+            max-height: min(86vh, 900px);
+            overflow: auto;
+            padding: 24px;
+            color: white;
+        }
+        .checkout-modal-card {
+            background: linear-gradient(180deg, #171717 0%, #0f0f0f 100%);
+            border: 1px solid var(--border);
+            border-radius: 22px;
+            width: min(760px, 100%);
+            max-height: min(86vh, 900px);
+            overflow: auto;
+            padding: 24px;
+            color: white;
+            box-shadow: 0 20px 55px rgba(0,0,0,0.4);
+        }
+        .checkout-grid { display: grid; gap: 14px; }
+        .checkout-summary {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 14px;
+        }
+        .checkout-summary ul { margin: 8px 0 0; padding-left: 18px; color: #d9dfe7; }
+        .checkout-form { display: grid; gap: 12px; }
+        .checkout-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .checkout-field label { display: block; margin-bottom: 6px; color: #d9dfe7; font-size: 0.92rem; }
+        .checkout-field input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            background: #0e0e0e;
+            color: white;
+        }
+        .checkout-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 6px; }
+        .checkout-status {
+            margin-top: 4px;
+            padding: 12px;
+            border-radius: 10px;
+            background: rgba(255,209,102,0.12);
+            color: #ffe8a3;
+            border: 1px solid rgba(255,209,102,0.28);
+        }
+        .checkout-status.success {
+            background: rgba(37,211,102,0.16);
+            color: #b8f5cd;
+            border: 1px solid rgba(37,211,102,0.28);
+        }
+        .option-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+        .option-grid[data-layout="two-by-two"] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .option-grid[data-layout="three-by-two"] {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+        .option-grid[data-layout="scroll-grid"] {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            max-height: 470px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+        .option-card {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 12px;
+        }
+        .option-card .thumb { height: 140px; border-radius: 12px; overflow: hidden; margin-bottom: 10px; }
+        .option-card .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .option-card h5 { margin: 0 0 8px; font-size: 0.96rem; }
+        .option-card .meta { color: #cfd5de; font-size: 0.9rem; line-height: 1.5; margin-bottom: 10px; }
+        .price-pill {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid var(--border);
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .option-card .buy-btn { width: 100%; padding: 9px 12px; border: none; border-radius: 999px; cursor: pointer; font-weight: 700; background: linear-gradient(135deg, var(--accent), #ff9f1c); color: #111; }
+
+        .cart-panel {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: min(360px, 100vw);
+            height: 100vh;
+            background: rgba(10,10,10,0.96);
+            border-left: 1px solid var(--border);
+            transform: translateX(100%);
+            transition: transform 0.25s ease;
+            z-index: 2200;
+            display: flex;
+            flex-direction: column;
+        }
+        .cart-panel.open { transform: translateX(0); }
+        .cart-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .cart-items { padding: 16px; flex: 1; overflow: auto; }
+        .cart-item { background: rgba(255,255,255,0.06); border: 1px solid var(--border); border-radius: 14px; padding: 12px; margin-bottom: 10px; }
+        .cart-item .row { display: flex; justify-content: space-between; gap: 8px; align-items: center; }
+        .cart-footer { padding: 16px; border-top: 1px solid var(--border); }
+        .cart-total { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; color: white; font-weight: 700; }
+        .cart-footer button { width: 100%; border: none; border-radius: 999px; padding: 11px 14px; background: linear-gradient(135deg, var(--accent), #ff9f1c); color: #111; cursor: pointer; font-weight: 800; }
+        .cart-footer button:disabled { background: #6b7280; color: #d1d5db; cursor: not-allowed; opacity: 0.7; box-shadow: none; }
+        .cart-item-controls { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 12px; }
+        .quantity-controls { display: inline-flex; align-items: center; gap: 10px; color: #e5e9f0; }
+        .qty-btn, .remove-btn { border: none; border-radius: 999px; cursor: pointer; font-weight: 700; }
+        .qty-btn { width: 32px; height: 32px; background: rgba(255,255,255,0.08); color: #fff; }
+        .remove-btn { padding: 8px 12px; background: #ff6b6b; color: white; }
+
+        .back-to-top {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, var(--accent), #ff9f1c);
+            color: #111;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            z-index: 1500;
+        }
+        .floating-cta {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: linear-gradient(135deg, #25D366, #128C7E);
+            color: white;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 10px 22px rgba(18, 140, 126, 0.28);
+            cursor: pointer;
+            z-index: 1500;
+            text-decoration: none;
+            transition: transform 0.28s ease, box-shadow 0.28s ease, bottom 0.28s ease;
+        }
+        .floating-cta.shifted {
+            bottom: 84px;
+        }
+        .floating-cta:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(18, 140, 126, 0.34); }
+        .floating-cta .cta-icon {
+            width: 22px;
+            height: 22px;
+            filter: brightness(0) invert(1);
+        }
+
+        @media (max-width: 900px) {
+            .header { padding: 12px 16px; }
+            .nav-actions { width: 100%; justify-content: flex-end; }
+            .about-item, .about-item.reverse { grid-template-columns: 1fr; }
+            .category-grid, .option-grid { grid-template-columns: 1fr 1fr; }
+            .detail-layout { grid-template-columns: 1fr; }
+            .checkout-row { grid-template-columns: 1fr; }
+            .modal-overlay { padding: 12px; }
+            .modal-card, .sub-modal-card, .checkout-modal-card { padding: 18px; }
+            .cart-panel { width: 100vw; }
+        }
+        @media (max-width: 600px) {
+            body { overflow-x: hidden; }
+            .header { align-items: flex-start; }
+            .brand { width: 100%; }
+            .nav-actions { gap: 8px; margin-top: 4px; }
+            .nav-btn { padding: 8px 12px; font-size: 0.88rem; }
+            .icon-btn { width: 42px; height: 42px; }
+            .hero { padding: 110px 14px 48px; }
+            .hero-card, .about-section, .contact-section { padding: 22px; border-radius: 20px; }
+            .hero-actions { flex-direction: column; align-items: stretch; }
+            .hero-actions .btn { width: 100%; }
+            .category-grid, .option-grid { grid-template-columns: 1fr; }
+            .about-item .image-frame { height: 200px; }
+            .carousel-stage { height: 240px; }
+            .detail-info, .carousel-panel { padding: 14px; }
+            .option-card .thumb { height: 120px; }
+            .floating-cta { right: 16px; bottom: 16px; width: 46px; height: 46px; }
+            .floating-cta.shifted { bottom: 76px; }
+            .checkout-actions { flex-direction: column-reverse; }
+            .checkout-actions .btn { width: 100%; }
+            .cart-footer { padding: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1 class="brand">GAMEVO</h1>
+        <div class="nav-actions">
+            <button class="nav-btn" onclick="scrollToSection('aboutSection')">About us</button>
+            <button class="nav-btn" onclick="scrollToSection('contactSection')">Contact us</button>
+            <button class="nav-btn" onclick="openExploreModal()">Explore</button>
+            <a class="nav-btn ctc-btn" href="https://wa.me/15551234567" target="_blank" rel="noopener noreferrer">
+                <img class="cta-icon" src="IMG/whatsapp-icon.svg" alt="WhatsApp icon">
+                Whatsapp
+            </a>
+            <button class="icon-btn" onclick="toggleCart()" aria-label="Open cart">
+                🛒
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-card">
+                <h1>GAMEVO</h1>
+                <p>Designed for players who want a sharper, cleaner, and more immersive experience.</p>
+                <div class="hero-actions">
+                    <button class="btn primary" onclick="openExploreModal()">Explore collections</button>
+                    <button class="btn" onclick="scrollToSection('aboutSection')">Discover more</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="aboutSection" class="section-block">
+            <div class="about-section">
+                <div class="about-list">
+                    <div class="about-item">
+                        <div class="image-frame"><img src="IMG/adogaming.jpg" alt="Gaming setup"></div>
+                        <div>
+                            <h3>Built for the modern gamer</h3>
+                            <p>We blend compact performance, bold design, and easy access to the gear that matters most. The experience is meant to feel polished without losing personality.</p>
+                        </div>
+                    </div>
+                    <div class="about-item reverse">
+                        <div>
+                            <h3>Curated hardware, simplified</h3>
+                            <p>From high-end laptops to refined accessories, every item is selected to make setup decisions clearer and more enjoyable.</p>
+                            
+                        </div>
+                        <div class="image-frame"><img src="IMG/hq720.jpg" alt="Hardware showcase"></div>
+                    </div>
+                    <div class="about-item">
+                        <div class="image-frame"><img src="IMG/MV5BMjZjZWRlNDItMmY5ZC00NDg2LWEyZmMtZWQ2NDVhZGM2NzUzXkEyXkFqcGc@._V1_.jpg" alt="Product display"></div>
+                        <div>
+                            <h3>Immersive visuals, high quality</h3>
+                            <p>We focus on devices and components that feel as good as they look, with strong visual identity and premium finishing.</p>
+                        </div>
+                    </div>
+                    <div class="about-item reverse">
+                        <div>
+                            <h3>Everything in one place</h3>
+                            <p>Whether you are planning a new rig or upgrading your setup, GAMEVO makes it easier to browse and compare the essentials.</p>
+                            <p style="margin-top: 10px; color: var(--accent); font-style: italic;">Ado chooses us for her specific needs.</p>
+                        </div>
+                        <div class="image-frame"><img src="IMG/ado_wallpaper__by_ishinomiya_dg9o2wb-fullview.jpg" alt="Keyboard and accessories"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contactSection" class="section-block">
+            <div class="contact-section">
+                <h2>Contact us</h2>
+                <p>Email: <a href="mailto:contact@gamevo.com">contact@gamevo.com</a></p>
+                <p>Instagram: <a href="https://instagram.com" target="_blank" rel="noreferrer">@gamevo</a></p>
+                <p>Copyright © 2026 GAMEVO. All rights reserved.</p>
+            </div>
+        </section>
+    </main>
+
+    <a class="floating-cta" href="https://wa.me/56944272882" target="_blank" rel="noopener noreferrer" aria-label="Contact via WhatsApp">
+        <img class="cta-icon" src="IMG/whatsapp-icon.svg" alt="WhatsApp icon">
+    </a>
+    <button class="back-to-top" id="backToTop" onclick="scrollToTop()" aria-label="Back to top">↑</button>
+
+    <div class="modal-overlay" id="exploreModal" onclick="if (event.target === this) closeExploreModal()">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Browse categories</h3>
+                <button class="modal-close" onclick="closeExploreModal()" aria-label="Close explore modal">×</button>
+            </div>
+            <div class="category-grid">
+                <div class="category-card">
+                    <div class="preview">
+                        <div class="preview-track">
+                            <img class="active" src="IMG/2_500.jpg" alt="Laptops preview">
+                            <img src="IMG/3_0.jpg" alt="Laptops preview 2">
+                            <img src="IMG/4_0.jpg" alt="Laptops preview 3">
+                        </div>
+                        <div class="preview-caption">Portable performance</div>
+                    </div>
+                    <h4>Laptops</h4>
+                    <p>Explore a range of modern gaming laptops with flexible configurations.</p>
+                    <div class="actions">
+                        <button onclick="openCategoryModal('laptops')">Explore</button>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="preview">
+                        <div class="preview-track">
+                            <img class="active" src="IMG/kb_0.jpg" alt="Keyboards preview">
+                            <img src="IMG/kb2_1.jpg" alt="Keyboards preview 2">
+                            <img src="IMG/kb3_1.jpg" alt="Keyboards preview 3">
+                        </div>
+                        <div class="preview-caption">Responsive controls</div>
+                    </div>
+                    <h4>Keyboards</h4>
+                    <p>Find compact and full-size keyboards designed for fast play.</p>
+                    <div class="actions">
+                        <button onclick="openCategoryModal('keyboards')">Explore</button>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="preview">
+                        <div class="preview-track">
+                            <img class="active" src="IMG/m4_1.jpg" alt="Mice preview">
+                            <img src="IMG/m6_1.jpg" alt="Mice preview 2">
+                            <img src="IMG/m3_1.jpg" alt="Mice preview 3">
+                        </div>
+                        <div class="preview-caption">Precision movement</div>
+                    </div>
+                    <h4>Mouses</h4>
+                    <p>Browse lightweight, responsive mice with smooth tracking.</p>
+                    <div class="actions">
+                        <button onclick="openCategoryModal('mice')">Explore</button>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="preview">
+                        <div class="preview-track">
+                            <img class="active" src="IMG/mon1_1.jpg" alt="Monitors preview">
+                            <img src="IMG/mon2_1.jpg" alt="Monitors preview 2">
+                            <img src="IMG/mon3_1.jpg" alt="Monitors preview 3">
+                        </div>
+                        <div class="preview-caption">Sharper display</div>
+                    </div>
+                    <h4>Monitors</h4>
+                    <p>Check out high refresh rate screens with vivid detail.</p>
+                    <div class="actions">
+                        <button onclick="openCategoryModal('monitors')">Explore</button>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="preview">
+                        <div class="preview-track">
+                            <img class="active" src="IMG/c3.jpg" alt="Components preview">
+                            <img src="IMG/c7.jpg" alt="Components preview 2">
+                            <img src="IMG/c13.jpg" alt="Components preview 3">
+                        </div>
+                        <div class="preview-caption">Core upgrades</div>
+                    </div>
+                    <h4>Components</h4>
+                    <p>Discover GPUs, SSDs, and other essential upgrades.</p>
+                    <div class="actions">
+                        <button onclick="openCategoryModal('components')">Explore</button>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="preview">
+                        <div class="preview-track">
+                            <img class="active" src="IMG/a1_1.jpg" alt="Accessories preview">
+                            <img src="IMG/a2_1.jpg" alt="Accessories preview 2">
+                            <img src="IMG/a3_1.jpg" alt="Accessories preview 3">
+                        </div>
+                        <div class="preview-caption">Complete the setup</div>
+                    </div>
+                    <h4>Accessories</h4>
+                    <p>Pick up the final touches that improve comfort and style.</p>
+                    <div class="actions">
+                        <button onclick="openCategoryModal('accessories')">Explore</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="categoryModal" onclick="if (event.target === this) closeCategoryModal()">
+        <div class="sub-modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div style="display:flex; align-items:center;">
+                    <button id="categoryBackBtn" class="modal-back-btn" onclick="goBackToExplore()" aria-label="Back to explore" style="display:none;">←</button>
+                    <h3 id="categoryTitle">Options</h3>
+                </div>
+                <button class="modal-close" onclick="closeCategoryModal()" aria-label="Close options modal">×</button>
+            </div>
+            <div id="categoryContent"></div>
+        </div>
+    </div>
+
+    <div class="cart-panel" id="cartPanel">
+        <div class="cart-header">
+            <h3 style="margin:0;">Cart</h3>
+            <button class="modal-close" onclick="toggleCart()" aria-label="Close cart">×</button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total</span>
+                <span id="cartTotal">$0</span>
+            </div>
+            <button id="checkoutButton" onclick="checkoutCart()">Checkout</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="emptyCartModal" onclick="if (event.target === this) closeEmptyCartModal()">
+        <div class="sub-modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Carrito vacío</h3>
+                <button class="modal-close" onclick="closeEmptyCartModal()" aria-label="Close empty cart modal">×</button>
+            </div>
+            <p>Tu carrito está vacío. Agrega un producto para continuar con el checkout.</p>
+            <button class="btn primary" onclick="closeEmptyCartModal()">Seguir comprando</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="checkoutModal" onclick="if (event.target === this) closeCheckoutModal()">
+        <div class="checkout-modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3>Secure checkout</h3>
+                <button class="modal-close" onclick="closeCheckoutModal()" aria-label="Close checkout modal">×</button>
+            </div>
+            <div class="checkout-grid">
+                <div class="checkout-summary" id="checkoutSummary"></div>
+                <form class="checkout-form" id="checkoutForm" onsubmit="submitCheckout(event)">
+                    <div class="checkout-row">
+                        <div class="checkout-field">
+                            <label for="cardName">Name on card</label>
+                            <input id="cardName" placeholder="Jane Doe" required>
+                        </div>
+                        <div class="checkout-field">
+                            <label for="cardNumber">Card number</label>
+                            <input id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                        </div>
+                    </div>
+                    <div class="checkout-row">
+                        <div class="checkout-field">
+                            <label for="expiry">Expiry</label>
+                            <input id="expiry" placeholder="MM/YY" required>
+                        </div>
+                        <div class="checkout-field">
+                            <label for="cvv">CVV</label>
+                            <input id="cvv" placeholder="123" maxlength="4" required>
+                        </div>
+                    </div>
+                    <div class="checkout-row">
+                        <div class="checkout-field">
+                            <label for="address">Billing address</label>
+                            <input id="address" placeholder="123 Main Street" required>
+                        </div>
+                        <div class="checkout-field">
+                            <label for="email">Email</label>
+                            <input id="email" type="email" placeholder="you@example.com" required>
+                        </div>
+                    </div>
+                    <div class="checkout-actions">
+                        <button type="button" class="btn" onclick="closeCheckoutModal()">Cancel</button>
+                        <button type="submit" class="btn primary">Place order</button>
+                    </div>
+                    <div class="checkout-status" id="checkoutStatus" role="status">Your payment is protected with secure encryption.</div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const exploreModal = document.getElementById('exploreModal');
+        const categoryModal = document.getElementById('categoryModal');
+        const categoryTitle = document.getElementById('categoryTitle');
+        const categoryContent = document.getElementById('categoryContent');
+        const cartPanel = document.getElementById('cartPanel');
+        const cartCount = document.getElementById('cartCount');
+        const cartItems = document.getElementById('cartItems');
+        const cartTotal = document.getElementById('cartTotal');
+        const checkoutButton = document.getElementById('checkoutButton');
+        const checkoutModal = document.getElementById('checkoutModal');
+        const checkoutSummary = document.getElementById('checkoutSummary');
+        const checkoutForm = document.getElementById('checkoutForm');
+        const checkoutStatus = document.getElementById('checkoutStatus');
+        const cardNumberInput = document.getElementById('cardNumber');
+        const expiryInput = document.getElementById('expiry');
+        const backToTopBtn = document.getElementById('backToTop');
+        const floatingCta = document.querySelector('.floating-cta');
+        const categoryBackBtn = document.getElementById('categoryBackBtn');
+
+        let cart = [];
+        let currentCategory = '';
+        let currentCarouselIndex = 0;
+        let carouselTimer = null;
+
+        function formatCardNumber(value) {
+            const digits = value.replace(/\D/g, '').slice(0, 16);
+            return digits.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+        }
+
+        function formatExpiry(value) {
+            const digits = value.replace(/\D/g, '').slice(0, 4);
+            if (digits.length > 2) {
+                return `${digits.slice(0, 2)}/${digits.slice(2)}`;
+            }
+            return digits;
+        }
+
+        cardNumberInput.addEventListener('input', function () {
+            this.value = formatCardNumber(this.value);
+        });
+
+        expiryInput.addEventListener('input', function () {
+            this.value = formatExpiry(this.value);
+        });
+
+        const categoryCatalog = {
+            laptops: {
+                title: 'Laptops',
+                layout: 'triple',
+                options: [
+                    {
+                        key: '16gb-ram',
+                        name: 'Notebook Gamer TUF Gaming A15 AMD Ryzen 7-170 NVIDIA RTX 3050 15.6" 144Hz FHD 16GB RAM 512GB SSD Windows 11 Home Negro FA506NCQ-HN043W',
+                        meta: 'ASUS TUF Gaming A15 with Ryzen 7, RTX 3050, 16GB RAM, 512GB SSD, and Windows 11 Home.',
+                        priceText: '$1,200',
+                        priceValue: 1200,
+                        images: ['IMG/2_500.jpg', 'IMG/2_1.jpg', 'IMG/2_2.jpg', 'IMG/2_3.jpg'],
+                        specs: ['CPU: AMD Ryzen 7 1700 (8 cores / 16 threads)', 'GPU: NVIDIA GeForce RTX 3050 4GB', 'RAM: 16GB DDR5', 'SSD Storage: 512GB NVMe', 'Display: 15.6" FHD 144Hz', 'OS: Windows 11 Home']
+                    },
+                    {
+                        key: '32gb-ram',
+                        name: 'Notebook Gamer Legion 5 Gen 10 Intel Core i9-14900HX NVIDIA GeForce RTX 5070 15.1" WUXGA OLED 165Hz 32GB RAM 1TB SSD Windows 11 Home Eclipse Black 83LY003NCL',
+                        meta: 'Lenovo Legion 5 Gen 10 with Intel Core i9, RTX 5070, 32GB RAM, 1TB SSD, and Windows 11 Home.',
+                        priceText: '$2,600',
+                        priceValue: 2600,
+                        images: ['IMG/3_0.jpg', 'IMG/3_1.jpg', 'IMG/3_2.jpg', 'IMG/3_3.jpg'],
+                        specs: ['CPU: Intel Core i9-14900HX', 'GPU: NVIDIA GeForce RTX 5070', 'RAM: 32GB DDR5', 'SSD Storage: 1TB NVMe', 'Display: 15.1" WUXGA OLED 165Hz', 'OS: Windows 11 Home']
+                    },
+                    {
+                        key: '512gb-ssd',
+                        name: 'Notebook Gamer AI PC ROG Strix SCAR 18 Intel Core Ultra 9-275HX NVIDIA GeForce RTX 5090 18" 240Hz 64GB RAM 2TB SSD Windows 11 Home Negro G835LX-SA135W Mochila + Mouse',
+                        meta: 'ASUS ROG Strix SCAR 18 with Intel Core Ultra 9, RTX 5090, 64GB RAM, 2TB SSD, and Windows 11 Home.',
+                        priceText: '$6,200',
+                        priceValue: 6200,
+                        images: ['IMG/4_0.jpg', 'IMG/4_1.jpg', 'IMG/4_2.jpg', 'IMG/4_3.jpg'],
+                        specs: ['CPU: Intel Core Ultra 9-275HX', 'GPU: NVIDIA GeForce RTX 5090', 'RAM: 64GB DDR5', 'SSD Storage: 2TB NVMe', 'Display: 18" 240Hz', 'OS: Windows 11 Home']
+                    },
+                    {
+                        key: '1tb-ssd',
+                        name: 'Notebook Gamer HP VICTUS 15-fb3032la AMD Ryzen 5 7535HS NVIDIA GeForce RTX 3050 6GB 15.6" 8GB RAM 512GB SSD Windows 11 Home Negro',
+                        meta: 'HP Victus 15 with Ryzen 5, RTX 3050 6GB, 8GB RAM, 512GB SSD, and Windows 11 Home.',
+                        priceText: '$950',
+                        priceValue: 950,
+                        images: ['IMG/5_0.jpg', 'IMG/5_1.jpg', 'IMG/5_2.jpg', 'IMG/5_3.jpg'],
+                        specs: ['CPU: AMD Ryzen 5 7535HS', 'GPU: NVIDIA GeForce RTX 3050 6GB', 'RAM: 8GB DDR5', 'SSD Storage: 512GB NVMe', 'Display: 15.6" FHD', 'OS: Windows 11 Home']
+                    },
+                    {
+                        key: 'gtx-3060',
+                        aliases: ['2tb-ssd'],
+                        name: 'Notebook Gamer Gigabyte A16 Intel Core i7-13620H NVIDIA RTX 5060 16" 165Hz WUXGA 16GB RAM 1TB SSD Windows 11 Home Negro CVHI3LA894PH',
+                        meta: 'Gigabyte A16 with Intel Core i7, RTX 5060, 16GB RAM, 1TB SSD, and Windows 11 Home.',
+                        priceText: '$2,200',
+                        priceValue: 2200,
+                        images: ['IMG/6_0.jpg', 'IMG/6_1.jpg', 'IMG/6_2.jpg', 'IMG/6_3.jpg'],
+                        specs: ['CPU: Intel Core i7-13620H', 'GPU: NVIDIA GeForce RTX 5060', 'RAM: 16GB DDR5', 'SSD Storage: 1TB NVMe', 'Display: 16" 165Hz WUXGA', 'OS: Windows 11 Home']
+                    },
+                    {
+                        key: 'rtx-4070',
+                        name: 'Notebook Gamer ASUS ROG Zephyrus Duo Intel Core Ultra 9 16" 120Hz NVIDIA RTX 5090 64GB RAM 2TB SSD Windows 11 Home Gris GX651AX-SR045W',
+                        meta: 'ASUS ROG Zephyrus Duo with Intel Core Ultra 9, RTX 5090, 64GB RAM, 2TB SSD, and Windows 11 Home.',
+                        priceText: '$8,600',
+                        priceValue: 8600,
+                        images: ['IMG/7_0.jpg', 'IMG/7_1.jpg', 'IMG/7_2.jpg', 'IMG/7_3.jpg'],
+                        specs: ['CPU: Intel Core Ultra 9', 'GPU: NVIDIA GeForce RTX 5090', 'RAM: 64GB DDR5', 'SSD Storage: 2TB NVMe', 'Display: 16" 120Hz', 'OS: Windows 11 Home']
+                    }
+                ]
+            },
+            keyboards: {
+                title: 'Keyboards',
+                layout: 'two-by-two',
+                options: [
+                    { key: 'kb-a', name: 'HP K110 Wired RGB Membrane Gaming Keyboard - Black', meta: 'HP K110 gaming keyboard with RGB lighting, membrane switches, and a compact wired design.', priceText: '$15', priceValue: 15, images: ['IMG/kb_0.jpg', 'IMG/kb_2.jpg'], specs: ['Layout: 60%', 'Switches: Membrane', 'Connection: USB', 'Backlight: RGB'] },
+                    { key: 'kb-b', name: 'Kensington Compact Multi-Device Dual Wireless (Bluetooth & 2.4GHz) Keyboard - White', meta: 'Kensington Brand, Model K75504ES', priceText: '$35', priceValue: 35, images: ['IMG/kb2_1.jpg', 'IMG/kb2_2.jpg'], specs: ['Compact design', 'Bluetooth 3.0 and 5.0', 'Compatible with Windows, macOS, iOS, and Chrome OS', 'Wireless 2.4 GHz connection with 128-bit AES encryption'] },
+                    { key: 'kb-c', name: 'Kensington Pro Fit Ergonomic Wired Keyboard - Black', meta: 'Kensington Brand, Model K72350', priceText: '$40', priceValue: 40, images: ['IMG/kb3_1.jpg', 'IMG/kb3_2.jpg'], specs: ['Ergonomic design with wrist support', 'Wired USB connection', 'Compact and comfortable keyboard for everyday work', 'Compatible with Windows and Mac'] },
+                    { key: 'kb-d', name: 'Logitech Ergo K860 Wireless Keyboard – Spanish Layout – Black', meta: 'Logitech Brand, Model K860', priceText: '$350', priceValue: 350, images: ['IMG/kb4_1.jpg', 'IMG/kb4_2.jpg'], specs: ['Ergonomic design with a natural curve', 'Wireless Bluetooth connection and USB receiver', 'Compact keyboard for work and productivity', 'Compatible with Windows, macOS, iPadOS, and Chrome OS'] }
+                ]
+            },
+            mice: {
+                title: 'Mouses',
+                layout: 'three-by-two',
+                options: [
+                    { key: 'mouse-a', name: 'HP HP 100 Wired Mouse - Black', meta: 'HP Brand, Model 100', priceText: '$15', priceValue: 15, images: ['IMG/m1_1.jpg', 'IMG/m1_2.jpg'], specs: ['Wired USB connection', 'Comfortable design for daily use', 'Smooth scrolling wheel', 'Compatible with PCs and laptops'] },
+                    { key: 'mouse-b', name: 'Trust Silent Wireless Mouse - Black', meta: 'Trust Brand, Model Nito', priceText: '$25', priceValue: 25, images: ['IMG/m2_1.jpg', 'IMG/m2_2.jpg'], specs: ['Wireless connection', 'Silent clicks', 'Comfortable ergonomic design', 'Compatible with Windows and Mac'] },
+                    { key: 'mouse-c', name: 'Corsair Ironclaw RGB Wired Gaming Mouse - Black', meta: 'Corsair Brand, Model Ironclaw RGB', priceText: '$85', priceValue: 85, images: ['IMG/m3_1.jpg', 'IMG/m3_2.jpg'], specs: ['Wired USB connection', 'RGB lighting', 'Ergonomic design for comfort', 'High-precision optical sensor'] },
+                    { key: 'mouse-d', name: 'ViewSonic MU910 Wired Gaming Mouse - Black', meta: 'ViewSonic Brand, Model MU910', priceText: '$15', priceValue: 15, images: ['IMG/m4_1.jpg', 'IMG/m4_2.jpg'], specs: ['Wired USB connection', 'Comfortable ergonomic shape', 'Smooth tracking for gaming and work', 'Compatible with Windows and Mac'] },
+                    { key: 'mouse-e', name: 'Logitech G502 X PLUS Wireless Gaming Mouse - White', meta: 'Logitech Brand, Model G502 X Plus', priceText: '$350', priceValue: 350, images: ['IMG/m5_1.jpg', 'IMG/m5_2.jpg'], specs: ['Wireless connection', 'High-performance gaming sensor', 'Customizable RGB lighting', 'Ergonomic design for precision play'] },
+                    { key: 'mouse-f', name: 'Logitech MX Anywhere 3S Wireless Mouse - Rose', meta: 'Logitech Brand, Model MX Anywhere 3S', priceText: '$180', priceValue: 180, images: ['IMG/m6_1.jpg', 'IMG/m6_2.jpg'], specs: ['Wireless connection', 'Compact portable design', 'Precise tracking on most surfaces', 'Compatible with Windows and Mac'] }
+                ]
+
+            },
+            monitors: {
+                title: 'Monitors',
+                layout: 'two-by-two',
+                options: [
+                    { key: 'monitor-a', name: 'Samsung Odyssey G5 32-inch QHD Gaming Monitor - Black', meta: 'Samsung Brand, Model LS32FG500ELXZS', priceText: '$420', priceValue: 420, images: ['IMG/mon1_1.jpg', 'IMG/mon1_2.jpg'], specs: ['Size: 32"', 'Resolution: QHD', 'Refresh: 180Hz', 'Panel: VA'] },
+                    { key: 'monitor-b', name: 'Dell P2425H 23.8-inch FHD IPS Monitor - Black', meta: 'Dell Brand, Model P2425H', priceText: '$300', priceValue: 300, images: ['IMG/mon2_1.jpg', 'IMG/mon2_2.jpg'], specs: ['Size: 23.8"', 'Resolution: FHD', 'Refresh: 100Hz', 'Panel: IPS'] },
+                    { key: 'monitor-c', name: 'Lenovo L27-4E 27-inch Monitor - Black', meta: 'Lenovo Brand, Model L27-4E', priceText: '$200', priceValue: 200, images: ['IMG/mon3_1.jpg', 'IMG/mon3_2.jpg'], specs: ['Size: 27"', 'Resolution: Full HD', 'Design: VESA compatible', 'Panel: IPS'] },
+                    { key: 'monitor-d', name: 'BenQ SW272U 27-inch 4K Photographer Monitor - Black', meta: 'BenQ Brand, Model SW272U', priceText: '$2800', priceValue: 2800, images: ['IMG/mon4_1.jpg', 'IMG/mon4_2.jpg'], specs: ['Size: 27"', 'Resolution: 4K UHD', 'Panel: IPS', 'Ideal for photo editing'] }
+                ]
+            },
+            components: {
+                title: 'Components',
+                layout: 'scroll-grid',
+                options: [
+                    { key: 'component-1', name: 'AMD Ryzen 7 7700X', meta: 'AMD Ryzen 7 7700X AM5 processor', priceText: '$600', priceValue: 600, images: ['IMG/c1.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Socket: AM5', 'Cores: 8', 'Threads: 16', 'Boost: Up to 5.4GHz'] },
+                    { key: 'component-2', name: 'MSI PRO A620M-B EVO', meta: 'MSI AMD Pro A620M-B EVO motherboard', priceText: '$130', priceValue: 130, images: ['IMG/c2.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Chipset: AMD A620', 'Form Factor: Micro-ATX', 'Socket: AM5', 'Memory: DDR5'] },
+                    { key: 'component-3', name: 'Kingston Fury Beast 16GB DDR4 RGB', meta: 'Kingston Fury Beast DDR4 16GB 3600MHz RAM', priceText: '$310', priceValue: 310, images: ['IMG/c3.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Capacity: 16GB', 'Speed: 3600MHz', 'Type: DDR4', 'Lighting: RGB'] },
+                    { key: 'component-4', name: 'Kingston 32GB DDR4 3200MHz', meta: 'Kingston 32GB DDR4 3200MHz UDIMM RAM', priceText: '$450', priceValue: 450, images: ['IMG/c4.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Capacity: 32GB', 'Speed: 3200MHz', 'Type: DDR4', 'Form: UDIMM'] },
+                    { key: 'component-5', name: 'XPG GAMMIX S70 Blade 1TB SSD', meta: 'XPG GAMMIX S70 Blade PCIe NVMe Gen4 1TB SSD', priceText: '$380', priceValue: 380, images: ['IMG/c5.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Capacity: 1TB', 'Interface: PCIe NVMe Gen4', 'Form Factor: M.2', 'Ideal for PS5 and PC'] },
+                    { key: 'component-6', name: 'Kingston Fury Renegade 2TB SSD', meta: 'Kingston Fury Renegade 2TB PCIe NVMe Gen4 SSD', priceText: '$930', priceValue: 930, images: ['IMG/c6.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Capacity: 2TB', 'Interface: PCIe NVMe Gen4', 'Form Factor: M.2', 'Heatsink included'] },
+                    { key: 'component-7', name: 'Esgaming BK01 ARGB Case', meta: 'Esgaming BK01 ARGB black case', priceText: '$95', priceValue: 95, images: ['IMG/c7.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Type: Mid Tower', 'Color: Black', 'Lighting: ARGB', 'Panel: Tempered glass'] },
+                    { key: 'component-8', name: 'Esgaming Gilgamesh ARGB Case', meta: 'Esgaming Gilgamesh ARGB black case', priceText: '$100', priceValue: 100, images: ['IMG/c8.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Type: Mid Tower', 'Color: Black', 'Lighting: ARGB', 'Panel: Tempered glass'] },
+                    { key: 'component-9', name: 'Corsair Frame 4500X RS RGB Case', meta: 'Corsair Frame 4500X RS RGB tempered glass case', priceText: '$190', priceValue: 190, images: ['IMG/c9.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Type: Mid Tower', 'Color: White', 'Lighting: RGB', 'Panel: Tempered glass'] },
+                    { key: 'component-10', name: 'ASUS ROG Strix 1000W Platinum', meta: 'ASUS ROG Strix 1000W Platinum power supply', priceText: '$360', priceValue: 360, images: ['IMG/c10.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Power: 1000W', 'Certification: 80 Plus Platinum', 'Type: ATX', 'Modular: Yes'] },
+                    { key: 'component-11', name: 'MSI MAG CoreLiquid A12 240', meta: 'MSI MAG CoreLiquid A12 240 liquid cooler', priceText: '$100', priceValue: 100, images: ['IMG/c11.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Radiator: 240mm', 'Cooling: Liquid', 'Socket Support: AM5 / Intel', 'Fans included: Yes'] },
+                    { key: 'component-12', name: 'ASUS SATA 24x DVD-RW', meta: 'ASUS SATA 24x black DVD-RW drive', priceText: '$0', priceValue: 0, images: ['IMG/c12.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Type: DVD-RW', 'Interface: SATA', 'Speed: 24x', 'Color: Black'] },
+                    { key: 'component-13', name: 'Gigabyte GeForce RTX 5080 16GB', meta: 'Gigabyte GeForce RTX 5080 16GB WindForce OC', priceText: '$2300', priceValue: 2300, images: ['IMG/c13.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['GPU: RTX 5080', 'Memory: 16GB', 'Cooling: WindForce', 'Overclocked: Yes'] },
+                    { key: 'component-14', name: 'ASUS TUF Gaming GeForce RTX 5090 32GB', meta: 'ASUS TUF Gaming GeForce RTX 5090 32GB', priceText: '$4600', priceValue: 4600, images: ['IMG/c14.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['GPU: RTX 5090', 'Memory: 32GB', 'Series: TUF Gaming', 'Performance: High-end'] },
+                    { key: 'component-15', name: 'ASUS ROG Astral GeForce RTX 5090 32GB GDDR7 OC Edition', meta: 'High-end graphics card with 32GB GDDR7 memory, advanced cooling, and premium performance for gaming and creative work.', priceText: '$7000', priceValue: 7000, images: ['IMG/c15.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Type: Graphics Card', 'Memory: 32GB GDDR7', 'Interface: PCIe 4.0', 'Cooling: ROG Astral'] }
+                ]
+            },
+            accessories: {
+                title: 'Accessories',
+                layout: 'triple',
+                options: [
+                    { key: 'accessory-a', name: 'Trust Gaming GXT 234 Yunix USB Microphone - Black', meta: 'USB microphone with a compact design, clear voice capture, and easy plug-and-play setup.', priceText: '$45', priceValue: 45, images: ['IMG/a1_1.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Type: Microphone', 'Connection: USB', 'Color: Black', 'Use: Streaming and voice chat'] },
+                    { key: 'accessory-b', name: 'Trust Taxon QHD 2K Webcam', meta: 'QHD 2K webcam with sharp image quality, wide compatibility, and easy setup for streaming or video calls.', priceText: '$70', priceValue: 70, images: ['IMG/a2_1.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Type: Webcam', 'Resolution: 2K QHD', 'Connection: USB', 'Use: Streaming and video calls'] },
+                    { key: 'accessory-c', name: 'Logitech G335 Gaming Headset', meta: 'Lightweight stereo gaming headset with 3.5mm connection, comfortable fit, and mint color design.', priceText: '$110', priceValue: 110, images: ['IMG/a3_1.jpg', 'IMG/ado-thumbs-up.jfif'], specs: ['Type: Headset', 'Connection: 3.5mm', 'Sound: Stereo', 'Color: Mint'] }
+                ]
+            }
+        };
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        document.querySelectorAll('.preview-track').forEach((track) => {
+            const slides = track.querySelectorAll('img');
+            let index = 0;
+            if (slides.length > 1) {
+                setInterval(() => {
+                    slides[index].classList.remove('active');
+                    index = (index + 1) % slides.length;
+                    slides[index].classList.add('active');
+                }, 3000);
+            }
+        });
+
+        window.addEventListener('scroll', () => {
+            const showBackToTop = window.scrollY > 320;
+            backToTopBtn.style.display = showBackToTop ? 'block' : 'none';
+            floatingCta.classList.toggle('shifted', showBackToTop);
+        });
+
+        function openExploreModal() {
+            exploreModal.style.display = 'flex';
+            categoryModal.style.display = 'none';
+            categoryBackBtn.style.display = 'none';
+        }
+
+        function closeExploreModal() {
+            exploreModal.style.display = 'none';
+        }
+
+        function goBackToExplore() {
+            categoryModal.style.display = 'none';
+            categoryBackBtn.style.display = 'none';
+            exploreModal.style.display = 'flex';
+        }
+
+        function openCategoryModal(category) {
+            currentCategory = category;
+            const config = categoryCatalog[category] || categoryCatalog.laptops;
+            closeExploreModal();
+            categoryTitle.textContent = config.title;
+            categoryBackBtn.style.display = 'inline-flex';
+            categoryContent.innerHTML = `
+                <div class="option-grid" data-layout="${config.layout}">
+                    ${config.options.map(option => `
+                        <div class="option-card option-card-clickable" onclick="showCategoryDetail('${category}', '${option.key}')">
+                            <div class="thumb"><img src="${option.images[0]}" alt="${option.name}"></div>
+                            <h5>${option.name}</h5>
+                            <div class="meta">${option.meta}</div>
+                            <div class="price-pill"><!-- EDIT ME: change the card price --> ${option.priceText}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            categoryModal.style.display = 'flex';
+        }
+
+        function showCategoryDetail(category, optionKey) {
+            const config = categoryCatalog[category] || categoryCatalog.laptops;
+            const option = config.options.find(item => item.key === optionKey || (Array.isArray(item.aliases) && item.aliases.includes(optionKey)));
+            if (!option) return;
+
+            clearInterval(carouselTimer);
+            currentCarouselIndex = 0;
+            categoryBackBtn.style.display = 'none';
+            categoryTitle.textContent = option.name;
+            categoryContent.innerHTML = `
+                <div class="detail-shell">
+                    <button class="back-btn" onclick="showCategoryOptions('${category}')" aria-label="Back to ${config.title} options">←</button>
+                    <div class="detail-layout">
+                        <div class="carousel-panel">
+                            <div class="carousel-stage" id="detailCarouselStage">
+                                ${option.images.map((img, index) => `<img src="${img}" class="${index === 0 ? 'active' : ''}" alt="${option.name} ${index + 1}">`).join('')}
+                            </div>
+                            <div class="carousel-controls">
+                                <button class="carousel-arrow" onclick="changeCategoryCarousel(-1)">‹</button>
+                                <div class="carousel-dots" id="detailCarouselDots">
+                                    ${option.images.map((_, index) => `<span class="carousel-dot ${index === 0 ? 'active' : ''}" onclick="goToCategoryCarousel(${index})"></span>`).join('')}
+                                </div>
+                                <button class="carousel-arrow" onclick="changeCategoryCarousel(1)">›</button>
+                            </div>
+                        </div>
+                        <div class="detail-info">
+                            <h3 class="detail-title" contenteditable="true">${option.name}</h3>
+                            <div class="detail-price" contenteditable="true"><!-- EDIT ME: change the detail price --> ${option.priceText}</div>
+                            <ul class="spec-list">
+                                ${option.specs.map(item => `<li>${item}</li>`).join('')}
+                            </ul>
+                            <button class="buy-btn" data-title="${config.title}" data-price="${option.priceValue}" data-name="${option.name}" onclick="addToCartFromButton(this)">Add to cart</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            startCategoryCarousel(option.images.length);
+        }
+
+        function showCategoryOptions(category) {
+            const config = categoryCatalog[category] || categoryCatalog.laptops;
+            categoryBackBtn.style.display = 'inline-flex';
+            categoryTitle.textContent = config.title;
+            categoryContent.innerHTML = `
+                <div class="option-grid" data-layout="${config.layout}">
+                    ${config.options.map(option => `
+                        <div class="option-card option-card-clickable" onclick="showCategoryDetail('${category}', '${option.key}')">
+                            <div class="thumb"><img src="${option.images[0]}" alt="${option.name}"></div>
+                            <h5>${option.name}</h5>
+                            <div class="meta">${option.meta}</div>
+                            <div class="price-pill"><!-- EDIT ME: change the card price --> ${option.priceText}</div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function startCategoryCarousel(length) {
+            const slides = document.querySelectorAll('#detailCarouselStage img');
+            const dots = document.querySelectorAll('#detailCarouselDots .carousel-dot');
+            if (slides.length === 0) return;
+
+            function render() {
+                slides.forEach((slide, index) => slide.classList.toggle('active', index === currentCarouselIndex));
+                dots.forEach((dot, index) => dot.classList.toggle('active', index === currentCarouselIndex));
+            }
+
+            render();
+            clearInterval(carouselTimer);
+            carouselTimer = setInterval(() => {
+                currentCarouselIndex = (currentCarouselIndex + 1) % length;
+                render();
+            }, 4000);
+        }
+
+        function changeCategoryCarousel(step) {
+            const length = document.querySelectorAll('#detailCarouselStage img').length;
+            currentCarouselIndex = (currentCarouselIndex + step + length) % length;
+            startCategoryCarousel(length);
+        }
+
+        function goToCategoryCarousel(index) {
+            currentCarouselIndex = index;
+            startCategoryCarousel(document.querySelectorAll('#detailCarouselStage img').length);
+        }
+
+        function closeCategoryModal() {
+            categoryModal.style.display = 'none';
+            categoryBackBtn.style.display = 'none';
+        }
+
+        function closeEmptyCartModal() {
+            document.getElementById('emptyCartModal').style.display = 'none';
+        }
+
+        function closeCheckoutModal() {
+            checkoutModal.style.display = 'none';
+            checkoutStatus.className = 'checkout-status';
+            checkoutStatus.textContent = 'Your payment is protected with secure encryption.';
+            if (checkoutForm) {
+                checkoutForm.reset();
+            }
+        }
+
+        function openCheckoutModal() {
+            if (cart.length === 0) {
+                openEmptyCartModal();
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+            checkoutSummary.innerHTML = `
+                <strong>Order summary</strong>
+                <ul>
+                    ${cart.map(item => `<li>${item.name} × ${item.quantity} — $${(item.price * item.quantity).toFixed(0)}</li>`).join('')}
+                </ul>
+                <p style="margin:8px 0 0; font-weight:700;">Total: $${total.toFixed(0)}</p>
+            `;
+            checkoutStatus.className = 'checkout-status';
+            checkoutStatus.textContent = 'Your payment is protected with secure encryption.';
+            if (checkoutForm) {
+                checkoutForm.reset();
+            }
+            cartPanel.classList.remove('open');
+            checkoutModal.style.display = 'flex';
+        }
+
+        function closeAllPopups() {
+            closeExploreModal();
+            closeCategoryModal();
+            closeEmptyCartModal();
+            closeCheckoutModal();
+        }
+
+        function toggleCart() {
+            cartPanel.classList.toggle('open');
+        }
+
+        function addToCartFromButton(button) {
+            const name = button.dataset.title || '';
+            const price = Number(button.dataset.price) || 0;
+            const option = button.dataset.name || '';
+            addToCart(name, price, option);
+        }
+
+        function addToCart(name, price, option) {
+            const displayName = option ? `${name} (${option})` : name;
+            const existing = cart.find(item => item.name === displayName);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ name: displayName, price: Number(price) || 0, quantity: 1 });
+            }
+            updateCart();
+            closeAllPopups();
+            cartPanel.classList.add('open');
+        }
+
+        function updateCart() {
+            const isEmpty = cart.length === 0;
+            checkoutButton.disabled = isEmpty;
+
+            if (isEmpty) {
+                cartItems.innerHTML = '<div style="color:#b9bec8; text-align:center;">Tu carrito está vacío.</div>';
+                cartTotal.textContent = '$0';
+                cartCount.textContent = '0';
+                return;
+            }
+
+            let total = 0;
+            let count = 0;
+            cartItems.innerHTML = cart.map(item => {
+                total += item.price * item.quantity;
+                count += item.quantity;
+                return `
+                    <div class="cart-item">
+                        <div class="row">
+                            <strong>${item.name}</strong>
+                            <span>$${item.price.toFixed(0)}</span>
+                        </div>
+                        <div class="cart-item-controls">
+                            <div class="quantity-controls">
+                                <button class="qty-btn" onclick="adjustCartQuantity('${item.name}', -1)">−</button>
+                                <span>Qty: ${item.quantity}</span>
+                                <button class="qty-btn" onclick="adjustCartQuantity('${item.name}', 1)">+</button>
+                            </div>
+                            <button class="remove-btn" onclick="removeFromCart('${item.name}')">Eliminar</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            cartTotal.textContent = '$' + total.toFixed(0);
+            cartCount.textContent = count;
+        }
+
+        function adjustCartQuantity(name, delta) {
+            const item = cart.find(item => item.name === name);
+            if (!item) return;
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                cart = cart.filter(cartItem => cartItem.name !== name);
+            }
+            updateCart();
+        }
+
+        function removeFromCart(name) {
+            cart = cart.filter(item => item.name !== name);
+            updateCart();
+        }
+
+        function checkoutCart() {
+            openCheckoutModal();
+        }
+
+        function submitCheckout(event) {
+            event.preventDefault();
+
+            const cardNumber = document.getElementById('cardNumber').value.replace(/\D/g, '');
+            const expiry = document.getElementById('expiry').value.trim();
+            const cvv = document.getElementById('cvv').value.trim();
+
+            if (cardNumber.length < 16 || cvv.length < 3 || !/^\d{2}\/\d{2}$/.test(expiry)) {
+                checkoutStatus.className = 'checkout-status';
+                checkoutStatus.textContent = 'Please enter a valid card number, expiry date, and CVV.';
+                return;
+            }
+
+            checkoutStatus.className = 'checkout-status success';
+            checkoutStatus.textContent = 'Payment verified. Your order has been placed successfully.';
+            cart = [];
+            updateCart();
+            setTimeout(() => {
+                closeCheckoutModal();
+            }, 1400);
+        }
+
+        updateCart();
+    </script>
+</body>
+</html>
